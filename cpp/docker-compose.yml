@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  producer:
+    working_dir: /opt/code
+    command: /opt/code/src/build/producer_main
+    container_name: producer_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/opt/code/
+      - /tmp/coram/logs:/opt/logs
+    environment:
+      SERVICE_NAME: producer
+
+  image_processor:
+    working_dir: /opt/code
+    command: /opt/code/src/build/image_processor_main
+    container_name: image_processor_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/opt/code/
+      - /tmp/coram/logs:/opt/logs
+    environment:
+      SERVICE_NAME: image_processor
+    network_mode: host
+
+  stats_reporter:
+    working_dir: /opt/code
+    command: /opt/code/src/build/stats_reporting_main
+    container_name: stats_reporter_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/opt/code/
+      - /tmp/coram/logs:/opt/logs
+    environment:
+      SERVICE_NAME: stats_reporter
+    network_mode: host
